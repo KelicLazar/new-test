@@ -16,11 +16,13 @@ function handleLogin(e: Event) {
         id="name"
         v-model="username"
         type="text"
+        placeholder="Type your username"
       >
       <input
         id="password"
         v-model="password"
         type="password"
+        placeholder="Type your password"
       >
       <button type="submit">
         Login
