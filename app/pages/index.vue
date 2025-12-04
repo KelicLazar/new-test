@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const postsStore = usePostsStore();
+const selectedPost = ref<PostItem | null>(null);
 const tags = ["history", "american", "crime", "magical", "french"];
 </script>
 
@@ -21,6 +22,7 @@ const tags = ["history", "american", "crime", "magical", "french"];
         :key="post.id"
         class="post-card"
         :class="{ 'bg-red-200': post.tags.includes(postsStore.selectedTag) }"
+        @click="selectedPost = post"
       >
         <span>{{ post.title }}</span>
         <span>{{ post.body }}</span>
@@ -38,9 +40,23 @@ const tags = ["history", "american", "crime", "magical", "french"];
         Next Page
       </button>
     </div>
-    <h1>{{ postsStore.currentPage }}</h1>
-    <h1>{{ postsStore.postsPerPage }}</h1>
-    <pre>{{ postsStore.data }}</pre>
+    <div
+      v-if="selectedPost"
+      class="modal-overlay"
+      @click="selectedPost = null"
+    >
+      <div class="modal" @click.stop>
+        <p><strong>Title:</strong> {{ selectedPost.title }}</p>
+        <p><strong>Body:</strong> {{ selectedPost.body }}</p>
+        <p><strong>Tags:</strong> {{ selectedPost.tags.join(', ') }}</p>
+        <p><strong>Likes:</strong> {{ selectedPost.reactions.likes }}</p>
+        <p><strong>Dislikes:</strong> {{ selectedPost.reactions.dislikes }}</p>
+        <p><strong>Views:</strong> {{ selectedPost.views }}</p>
+        <button @click="selectedPost = null">
+          close
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -53,5 +69,23 @@ const tags = ["history", "american", "crime", "magical", "french"];
 .post-card {
   display: flex;
   flex-direction: column;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(5, 5, 5, 0.158);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal {
+  background-color: white;
+  max-width: 400px;
+  padding: 20px;
 }
 </style>
