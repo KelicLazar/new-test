@@ -1,15 +1,26 @@
 <script setup lang="ts">
 const postsStore = usePostsStore();
+const tags = ["history", "american", "crime", "magical", "french"];
 </script>
 
 <template>
   <div>
-    <h1>Homepage</h1>
+    <h1>
+      Homepage
+    </h1>
+    <u-select
+      v-model="postsStore.selectedTag"
+      placeholder="Select tag"
+      class="min-w-40"
+      :items="tags"
+    />
+    {{ postsStore.selectedTag }}
     <div class="posts-container">
       <div
         v-for="post in postsStore.data?.posts"
         :key="post.id"
         class="post-card"
+        :class="{ 'bg-red-200': post.tags.includes(postsStore.selectedTag) }"
       >
         <span>{{ post.title }}</span>
         <span>{{ post.body }}</span>

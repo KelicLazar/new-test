@@ -4,6 +4,7 @@ export const usePostsStore = defineStore("usePostsStore", () => {
   const currentPage = ref(1);
   const postsPerPage = ref(10);
   const search = ref("");
+  const selectedTag = ref<string>("");
   const skip = computed(() => {
     return currentPage.value * postsPerPage.value - postsPerPage.value;
   });
@@ -18,6 +19,7 @@ export const usePostsStore = defineStore("usePostsStore", () => {
   return {
     data,
     totalPosts,
+    selectedTag,
     search,
     currentPage,
     postsPerPage,
