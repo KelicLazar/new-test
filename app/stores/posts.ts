@@ -11,10 +11,19 @@ export const usePostsStore = defineStore("usePostsStore", () => {
   const requestUrl = computed(() => {
     return `https://dummyjson.com/posts/search?limit=${postsPerPage.value}&skip=${skip.value}&q=${search.value}`;
   });
-  const { data } = useFetch<PostsResponse>(requestUrl);
+  const { data, status, error } = useFetch<PostsResponse>(requestUrl);
   const totalPosts = computed(() => {
     return data.value?.total;
   });
+
+  watch(
+    () => search.value,
+    (newSearch, oldSearch) => {
+      if (newSearch !== oldSearch) {
+        currentPage.value = 1;
+      }
+    },
+  );
 
   return {
     data,
@@ -23,5 +32,7 @@ export const usePostsStore = defineStore("usePostsStore", () => {
     search,
     currentPage,
     postsPerPage,
+    status,
+    error,
   };
 });
